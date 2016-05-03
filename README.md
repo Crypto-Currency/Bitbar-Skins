@@ -1,27 +1,17 @@
-<<<<<<< HEAD
+
 # Bitbar-Skins
 =======
-#  BitBar
-##Bitbar official development tree
-<br>
-##  Based on NovaCoin
+
+##Bitbar forked from official develpment tree
 <br>
 <br>
-###  bitbar.conf
-<pre>
-addnode=btb.altcointech.net
-</pre>
-you can get an updated list at:[Cryptocoinexplorer](http://btb.cryptocoinexplorer.com/peerinfo)
+Work area for skinning QT wallet.<br>
+Once compleated, this will be merged back to master<br>
 <br>
-<br>
-<br>
-### Current zip Releases:
-*  Windows  QT [v.0.4.4.005](https://drive.google.com/file/d/0B1cnD3W8c0jtWGlNUXEzdTFkMUE/view?usp=sharing) 
-<br>
-<br>
+This will allow updates to Bitbar master - without dragging in any buggy - broken 'skin' code.
 <br>
 
 
 ###  Bitbar Web Site [bitbar.co](http://bitbar.co/)
 ###  BTB Information Thread [bitcointalk.org](https://bitcointalk.org/index.php?topic=196125.0)
->>>>>>> 378c19ea3568465d4bb3ecbce571b8f0cf50e919
+
