@@ -6,32 +6,30 @@
 namespace Ui {
   class SkinsPage;
 }
-//class AddressTableModel;
-//class OptionsModel;
 
-//QT_BEGIN_NAMESPACE
-//class QTableView;
-//class QItemSelection;
-//class QSortFilterProxyModel;
-//class QMenu;
-//class QModelIndex;
-//QT_END_NAMESPACE
+class SkinsModel;
+class MonitoredDataMapper;
 
-/** Widget that shows a list of sending or receiving addresses.
-  */
+
 class SkinsPage : public QDialog
 {
   Q_OBJECT
+
 public:
   explicit SkinsPage(QWidget *parent = 0);
-    ~SkinsPage();
+  ~SkinsPage();
+
+  void setModel(SkinsModel *model);
+  void setMapper();
 
 //public slots:
 //    void done(int retval);
 //    void exportClicked();
 
 private:
-    Ui::SkinsPage *ui;
+  Ui::SkinsPage *ui;
+  SkinsModel *model;
+  MonitoredDataMapper *mapper;
 //    QMenu *contextMenu;
 //    QAction *deleteAction;
 //    QString newAddressToSelect;
