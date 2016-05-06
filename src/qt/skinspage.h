@@ -1,42 +1,58 @@
 #ifndef SKINSPAGE_H
 #define SKINSPAGE_H
 
-#include <QDialog>
+//#include <QDialog>
+#include <QWidget>
+#include <QComboBox>
+#include <QTableWidget>
+#include <QDir>
+#include <QPushButton>
+#include <QLabel>
 
 namespace Ui {
   class SkinsPage;
 }
 
-class SkinsModel;
-class MonitoredDataMapper;
-
-
-class SkinsPage : public QDialog
+class SkinsPage : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit SkinsPage(QWidget *parent = 0);
-  ~SkinsPage();
+  SkinsPage(QWidget *parent = 0);
 
-  void setModel(SkinsModel *model);
-  void setMapper();
 
-//public slots:
-//    void done(int retval);
-//    void exportClicked();
+private slots:
+  void browse();
+  void find();
+  void openFileOfItem(int row, int column);
+  void optionChanged();
 
 private:
   Ui::SkinsPage *ui;
-  SkinsModel *model;
-  MonitoredDataMapper *mapper;
-//    QMenu *contextMenu;
-//    QAction *deleteAction;
-//    QString newAddressToSelect;
+  QStringList findFiles(const QStringList &files, const QString &text);
+  void showFiles(const QStringList &files);
+  QPushButton *createButton(const QString &text, const char *member);
+  QComboBox *createComboBox(const QString &text = QString());
+  void createFilesTable();
+  void loadSkin(QString fname);
+  void loadSettings();
+  void saveSettings();
 
-//private slots:
-//    void on_skin1_clicked();  // default
-//    void on_skin2_clicked();  // gold daze
+  QString IniFile,inipath;
+  bool inib1,inib2,inib3;
+
+  QComboBox *fileComboBox;
+  QComboBox *textComboBox;
+  QComboBox *directoryComboBox;
+  QLabel *fileLabel;
+  QLabel *textLabel;
+  QLabel *directoryLabel;
+  QLabel *filesFoundLabel;
+  QPushButton *browseButton;
+  QPushButton *findButton;
+  QTableWidget *filesTable;
+  QDir currentDir;
+
 };
 
 #endif // SKINSPAGE_H
