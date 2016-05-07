@@ -38,23 +38,23 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QRadioButton" name="rbRound">
+      <widget class="QCheckBox" name="CB1">
        <property name="text">
-        <string>Rounded Corners</string>
+        <string>Background image</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="rbBackground">
+      <widget class="QCheckBox" name="CB2">
        <property name="text">
-        <string>Background Image</string>
+        <string>Rounded corners</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButton">
+      <widget class="QCheckBox" name="CB3">
        <property name="text">
-        <string>RadioButton</string>
+        <string>CheckBox</string>
        </property>
       </widget>
      </item>

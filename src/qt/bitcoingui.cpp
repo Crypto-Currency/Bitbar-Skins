@@ -93,12 +93,12 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
 
 // load default skin
-QFile styleFile("skins/default.qss");
-styleFile.open(QFile::ReadOnly);
-QByteArray bytes = styleFile.readAll();
-QString newStyleSheet(bytes);
-QApplication *app = (QApplication*)QApplication::instance();
-app->setStyleSheet(newStyleSheet);
+//QFile styleFile("skins/default.qss");
+//styleFile.open(QFile::ReadOnly);
+//QByteArray bytes = styleFile.readAll();
+//QString newStyleSheet(bytes);
+//QApplication *app = (QApplication*)QApplication::instance();
+//app->setStyleSheet(newStyleSheet);
 
 
 #ifndef Q_OS_MAC

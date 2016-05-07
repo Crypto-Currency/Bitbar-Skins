@@ -1,5 +1,6 @@
 #include "skinspage.h"
 #include "ui_skinspage.h"
+//#include "settings.h"
 
 #include <QClipboard>
 #include <QMessageBox>
@@ -11,6 +12,7 @@
 #include <QUrl>
 #include <QSettings>
 
+
 SkinsPage::SkinsPage(QWidget *parent) : QWidget(parent), ui(new Ui::SkinsPage)
 {
   ui->setupUi(this);
@@ -19,7 +21,9 @@ SkinsPage::SkinsPage(QWidget *parent) : QWidget(parent), ui(new Ui::SkinsPage)
 
 //  QAction *b1Change =new QAction(tr("Show or Hide background image"),this);
 
-  connect(ui->rbBackground, SIGNAL(toggled(bool)), this, SLOT(optionChanged()));
+  connect(ui->CB1, SIGNAL(toggled(bool)), this, SLOT(optionChanged()));
+  connect(ui->CB2, SIGNAL(toggled(bool)), this, SLOT(optionChanged()));
+  connect(ui->CB3, SIGNAL(toggled(bool)), this, SLOT(optionChanged()));
 
   fileComboBox = createComboBox(tr("*"));
   textComboBox = createComboBox();
@@ -68,7 +72,9 @@ void SkinsPage::browse()
       directoryComboBox->addItem(directory);
     directoryComboBox->setCurrentIndex(directoryComboBox->findText(directory));
   }
-// save settings
+  inipath=directory;
+  // save settings
+  saveSettings();
 }
 
 void SkinsPage::find()
@@ -200,9 +206,31 @@ void SkinsPage::openFileOfItem(int row, int /* column */)
 {
   QTableWidgetItem *item = filesTable->item(row, 0);
   
-QMessageBox::information(this,tr("Open File:"),tr("=%1").arg(item->text()));
-
+  inifname=item->text();
+  saveSettings();
+  loadSkin();
+QMessageBox::information(this,tr("Open File:"),tr("=%1").arg(inipath));
 //  QDesktopServices::openUrl(QUrl::fromLocalFile(currentDir.absoluteFilePath(item->text())));
+}
+
+
+void SkinsPage::optionChanged()
+{
+  QMessageBox::information(this,tr("IniFile:"),tr("=%1").arg(IniFile));
+  saveSettings();
+  loadSkin();
+}
+
+void SkinsPage::saveSettings()
+{
+  QSettings settings(IniFile, QSettings::NativeFormat);
+  settings.setValue("path", inipath);
+  settings.setValue("filename", inifname);
+  settings.setValue("BackgroundImg", ui->CB1->isChecked());
+  settings.setValue("RoundCorners", ui->CB2->isChecked());
+  settings.setValue("CB3", ui->CB3->isChecked());
+
+//  QMessageBox::information(this,tr("inipath:"),tr("=%1").arg(inipath));
 }
 
 void SkinsPage::loadSettings()
@@ -210,27 +238,26 @@ void SkinsPage::loadSettings()
   QSettings settings(IniFile, QSettings::NativeFormat);
 //  QString sText = settings.value("text", "").toString();
   inipath=settings.value("path", "").toString();
-  inib1=settings.value("b1", false).toBool();
-  inib2=settings.value("b2", false).toBool();
-  inib3=settings.value("b3", false).toBool();
+  inifname=settings.value("filename", "").toString();
+  inib1=settings.value("BackgroundImg", false).toBool();
+  inib2=settings.value("RoundCorners", false).toBool();
+  inib3=settings.value("CB3", false).toBool();
+
+  if(inib1)
+    ui->CB1->setCheckState(Qt::Checked);
+  if(inib2)
+    ui->CB2->setCheckState(Qt::Checked);
+  if(inib3)
+    ui->CB3->setCheckState(Qt::Checked);
 }
  
-void SkinsPage::saveSettings()
+void SkinsPage::loadSkin()
 {
-  QSettings settings(IniFile, QSettings::NativeFormat);
-//  QString sText = (m_pEdit) ? m_pEdit->text() : "";
-  settings.setValue("path", IniFile);
-  settings.setValue("b1", ui->rbBackground->isChecked());
-  settings.setValue("b2", ui->rbRound->isChecked());
-  settings.setValue("b3", inib3);
-//  if (m_pLabel)
-//    m_pLabel->setText(sText);
-  QMessageBox::information(this,tr("inipath:"),tr("=%1").arg(inipath));
-}
-
-void SkinsPage::optionChanged()
-{
-  QMessageBox::information(this,tr("IniFile:"),tr("=%1").arg(IniFile));
-  saveSettings();
+  QFile styleFile(inipath+"/"+inifname);
+  styleFile.open(QFile::ReadOnly);
+  QByteArray bytes = styleFile.readAll();
+  QString newStyleSheet(bytes);
+  QApplication *app = (QApplication*)QApplication::instance();
+  app->setStyleSheet(newStyleSheet);
 }
 

@@ -19,7 +19,7 @@ class SkinsPage : public QWidget
 
 public:
   SkinsPage(QWidget *parent = 0);
-
+//  static SSettings *Settings;
 
 private slots:
   void browse();
@@ -37,8 +37,9 @@ private:
   void loadSkin(QString fname);
   void loadSettings();
   void saveSettings();
+  void loadSkin();
 
-  QString IniFile,inipath;
+  QString IniFile,inipath,inifname;
   bool inib1,inib2,inib3;
 
   QComboBox *fileComboBox;

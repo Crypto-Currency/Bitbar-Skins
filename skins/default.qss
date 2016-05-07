@@ -5,7 +5,7 @@ QMainWindow
 
 QWidget
 {
-  border-image: url(skins/bitbar-background.jpg) 0 0 0 0 stretch stretch;
+  border-image: url(skins/images/bitbar-background.jpg) 0 0 0 0 stretch stretch;
 }
 
 QToolButton:!hover
