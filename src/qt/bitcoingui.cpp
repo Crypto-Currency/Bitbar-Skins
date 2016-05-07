@@ -91,16 +91,6 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     resize(850, 550);
   setWindowTitle(tr("BitBar")+" - "+tr("Wallet")+" "+QString::fromStdString(CLIENT_BUILD));
 
-
-// load default skin
-//QFile styleFile("skins/default.qss");
-//styleFile.open(QFile::ReadOnly);
-//QByteArray bytes = styleFile.readAll();
-//QString newStyleSheet(bytes);
-//QApplication *app = (QApplication*)QApplication::instance();
-//app->setStyleSheet(newStyleSheet);
-
-
 #ifndef Q_OS_MAC
     qApp->setWindowIcon(QIcon(":icons/bitcoin"));
     setWindowIcon(QIcon(":icons/bitcoin"));

@@ -19,7 +19,11 @@ SkinsPage::SkinsPage(QWidget *parent) : QWidget(parent), ui(new Ui::SkinsPage)
   browseButton = createButton(tr("&Browse..."), SLOT(browse()));
   findButton = createButton(tr("&Find"), SLOT(find()));
 
-//  QAction *b1Change =new QAction(tr("Show or Hide background image"),this);
+// load settings - do before connecting signals or loading will trigger optionchanged
+  inipath=QApplication::applicationDirPath()+("/");
+  IniFile = inipath+("skins.ini");
+  loadSettings();
+  loadSkin();
 
   connect(ui->CB1, SIGNAL(toggled(bool)), this, SLOT(optionChanged()));
   connect(ui->CB2, SIGNAL(toggled(bool)), this, SLOT(optionChanged()));
@@ -27,7 +31,11 @@ SkinsPage::SkinsPage(QWidget *parent) : QWidget(parent), ui(new Ui::SkinsPage)
 
   fileComboBox = createComboBox(tr("*"));
   textComboBox = createComboBox();
-  directoryComboBox = createComboBox(QDir::currentPath());
+  
+  if(inipath!="")
+    directoryComboBox = createComboBox(inipath);
+  else
+    directoryComboBox = createComboBox(QDir::currentPath());
 
   fileLabel = new QLabel(tr("Named:"));
   textLabel = new QLabel(tr("Description search:"));
@@ -54,11 +62,8 @@ SkinsPage::SkinsPage(QWidget *parent) : QWidget(parent), ui(new Ui::SkinsPage)
 #if !defined(Q_OS_SYMBIAN) && !defined(Q_WS_MAEMO_5) && !defined(Q_WS_SIMULATOR)
     resize(700, 300);
 #endif
-
-// load settings
-  inipath=QApplication::applicationDirPath()+("/");
-  IniFile = inipath+("skins.ini");
-  loadSettings();
+  //force find
+  find();
 }
 
 void SkinsPage::browse()
