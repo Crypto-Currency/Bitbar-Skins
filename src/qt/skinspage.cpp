@@ -143,6 +143,7 @@ QStringList SkinsPage::findFiles(const QStringList &files, const QString &text)
 
 void SkinsPage::showFiles(const QStringList &files)
 {
+  QString line="description goes here";
   for (int i = 0; i < files.size(); ++i)
   {
     QFile file(currentDir.absoluteFilePath(files[i]));
@@ -150,15 +151,20 @@ void SkinsPage::showFiles(const QStringList &files)
 
     QTableWidgetItem *fileNameItem = new QTableWidgetItem(files[i]);
     fileNameItem->setFlags(fileNameItem->flags() ^ Qt::ItemIsEditable);
-    QTableWidgetItem *descriptionItem = new QTableWidgetItem("description goes here");
 
+    QFile inputFile(currentDir.absoluteFilePath(files[i]));
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+      QTextStream in(&inputFile);
+      if(!in.atEnd())
+        line = in.readLine();
+    }
+    inputFile.close();
+//qDebug() << "skin file path:" <<file;
+//qDebug() << "desc line= " << line;
 
-//    QTableWidgetItem *sizeItem = new QTableWidgetItem(tr("%1 KB").arg(int((size + 1023) / 1024)));
-//    sizeItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-//    sizeItem->setFlags(sizeItem->flags() ^ Qt::ItemIsEditable);
-//    QTableWidgetItem *descriptionItem= new QTableWidgetItem(tr(""));
-//    QString *temp="description goes here";
-//    descriptionItem=temp;
+    QTableWidgetItem *descriptionItem = new QTableWidgetItem(line);
+
     int row = filesTable->rowCount();
     filesTable->insertRow(row);
     filesTable->setItem(row, 0, fileNameItem);
@@ -166,9 +172,9 @@ void SkinsPage::showFiles(const QStringList &files)
   }
   filesFoundLabel->setText(tr("%1 file(s) found").arg(files.size()) +
 #if defined(Q_OS_SYMBIAN) || defined(Q_WS_MAEMO_5)
-                             (" (Select file to open it)"));
+    (" (Select file to open it)"));
 #else
-                             (" (Double click on a file to open it)"));
+    (" (Double click on a file to open it)"));
 #endif
   filesFoundLabel->setWordWrap(true);
 }
