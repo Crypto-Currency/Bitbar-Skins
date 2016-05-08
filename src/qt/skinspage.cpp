@@ -11,7 +11,9 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QSettings>
+#include <QSize>
 
+#include <QDebug>
 
 SkinsPage::SkinsPage(QWidget *parent) : QWidget(parent), ui(new Ui::SkinsPage)
 {
@@ -20,7 +22,8 @@ SkinsPage::SkinsPage(QWidget *parent) : QWidget(parent), ui(new Ui::SkinsPage)
   findButton = createButton(tr("&Find"), SLOT(find()));
 
 // load settings - do before connecting signals or loading will trigger optionchanged
-  inipath=QApplication::applicationDirPath()+("/");
+//  inipath=QApplication::applicationDirPath()+("/");
+  inipath=QDir::homePath()+("/");
   IniFile = inipath+("skins.ini");
   loadSettings();
   loadSkin();
@@ -223,6 +226,7 @@ void SkinsPage::optionChanged()
 {
   QMessageBox::information(this,tr("IniFile:"),tr("=%1").arg(IniFile));
   saveSettings();
+  loadSettings(); // to resize the window
   loadSkin();
 }
 
@@ -234,14 +238,11 @@ void SkinsPage::saveSettings()
   settings.setValue("BackgroundImg", ui->CB1->isChecked());
   settings.setValue("RoundCorners", ui->CB2->isChecked());
   settings.setValue("CB3", ui->CB3->isChecked());
-
-//  QMessageBox::information(this,tr("inipath:"),tr("=%1").arg(inipath));
 }
 
 void SkinsPage::loadSettings()
 {
   QSettings settings(IniFile, QSettings::NativeFormat);
-//  QString sText = settings.value("text", "").toString();
   inipath=settings.value("path", "").toString();
   inifname=settings.value("filename", "").toString();
   inib1=settings.value("BackgroundImg", false).toBool();

@@ -30,6 +30,7 @@
 #include "wallet.h"
 #include "bitcoinrpc.h"
 #include "version.h"
+#include <QDebug>
 
 #ifdef Q_OS_MAC
 #include "macdockiconhandler.h"
@@ -88,7 +89,18 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     notificator(0),
     rpcConsole(0)
 {
+
+// load QMainWindow size and position from ini file
+  QString IniFile=QDir::homePath()+("/skins.ini");
+  QSettings settings(IniFile, QSettings::NativeFormat);
+  if(settings.contains("windowSize") && settings.contains("windowPos"))
+  {
+    resize(settings.value("windowSize").toSize());
+    move(settings.value("windoPos").toPoint());
+  }
+  else
     resize(850, 550);
+
   setWindowTitle(tr("BitBar")+" - "+tr("Wallet")+" "+QString::fromStdString(CLIENT_BUILD));
 
 #ifndef Q_OS_MAC
@@ -231,6 +243,15 @@ BitcoinGUI::~BitcoinGUI()
 #ifdef Q_OS_MAC
     delete appMenuBar;
 #endif
+  QString IniFile=QDir::homePath()+("/skins.ini");
+  QSettings settings(IniFile, QSettings::NativeFormat);
+
+//qDebug() << "IniFile path:" <<IniFile;
+//qDebug() << "saving settings values: windowSize " << size() << " windowPos" << pos();
+
+  settings.setValue("windowSize",size());
+  settings.setValue("windowPos",pos());
+
 }
 
 void BitcoinGUI::createActions()

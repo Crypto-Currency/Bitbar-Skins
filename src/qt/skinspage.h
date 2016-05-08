@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QPushButton>
 #include <QLabel>
+#include <QMainWindow>
 
 namespace Ui {
   class SkinsPage;
@@ -33,6 +34,7 @@ private:
   void showFiles(const QStringList &files);
   QPushButton *createButton(const QString &text, const char *member);
   QComboBox *createComboBox(const QString &text = QString());
+
   void createFilesTable();
   void loadSkin(QString fname);
   void loadSettings();
@@ -41,6 +43,8 @@ private:
 
   QString IniFile,inipath,inifname;
   bool inib1,inib2,inib3;
+//  QDesktopWidget fSize;
+  QMainWindow fSize;
 
   QComboBox *fileComboBox;
   QComboBox *textComboBox;
