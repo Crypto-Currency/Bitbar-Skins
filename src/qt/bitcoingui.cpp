@@ -249,6 +249,8 @@ BitcoinGUI::~BitcoinGUI()
   boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
   QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
 
+  QMessageBox::information(this,tr("loading IniFile:"),tr("=%1").arg(IniFile.string().c_str()));
+
 qDebug() << "IniFile path:" <<IniFile.string().c_str();
 //qDebug() << "saving settings values: windowSize " << size() << " windowPos" << pos();
 
