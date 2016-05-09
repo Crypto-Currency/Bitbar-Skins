@@ -26,7 +26,9 @@ SkinsPage::SkinsPage(QWidget *parent) : QWidget(parent), ui(new Ui::SkinsPage)
   findButton = createButton(tr("&Find"), SLOT(find()));
 
 // load settings - do before connecting signals or loading will trigger optionchanged
-  IniFile = GetDataDir() / "skins.ini";
+  QSettings settings("Bitbar", "settings");
+  inipath=settings.value("path", "").toString();
+//  IniFile = GetDataDir() / "skins.ini";
   loadSettings();
   loadSkin();
 
@@ -37,7 +39,7 @@ SkinsPage::SkinsPage(QWidget *parent) : QWidget(parent), ui(new Ui::SkinsPage)
   fileComboBox = createComboBox(tr("*"));
   textComboBox = createComboBox();
   
-qDebug() << "inipath:" <<inipath;
+//qDebug() << "from settings inipath:" <<inipath;
   if(inipath!="")
     directoryComboBox = createComboBox(inipath);
   else
@@ -49,7 +51,7 @@ qDebug() << "inipath:" <<inipath;
 
   }
 //    directoryComboBox = createComboBox(QDir::currentPath());
-qDebug() << "inipath:" <<inipath;
+//qDebug() << "from getdatadir inipath:" <<inipath;
 
   fileLabel = new QLabel(tr("Named:"));
   textLabel = new QLabel(tr("Description search:"));
@@ -70,19 +72,14 @@ qDebug() << "inipath:" <<inipath;
   ui->mainLayout->addWidget(filesTable, 3, 0, 1, 3);
   ui->mainLayout->addWidget(filesFoundLabel, 4, 0, 1, 2);
   ui->mainLayout->addWidget(findButton, 4, 2);
-//  setLayout(mainLayout);
 
-//    setWindowTitle(tr("Find Files"));
-//#if !defined(Q_OS_SYMBIAN) && !defined(Q_WS_MAEMO_5) && !defined(Q_WS_SIMULATOR)
-//    resize(700, 300);
-//#endif
   //force find
   find();
 }
 
 void SkinsPage::browse()
 {
-  QString directory=QFileDialog::getExistingDirectory(this,tr("Find Files"),QDir::currentPath());
+  QString directory=QFileDialog::getExistingDirectory(this,tr("Find Files"),inipath);
 
   if (!directory.isEmpty())
   {
@@ -153,11 +150,13 @@ QStringList SkinsPage::findFiles(const QStringList &files, const QString &text)
 
 void SkinsPage::showFiles(const QStringList &files)
 {
+  inipath=currentDir.absolutePath();
+QMessageBox::information(this,tr("currentDir:"),tr("=%1").arg(inipath));
+  
   QString line="description goes here";
   for (int i = 0; i < files.size(); ++i)
   {
     QFile file(currentDir.absoluteFilePath(files[i]));
-//    qint64 size = QFileInfo(file).size();
 
     QTableWidgetItem *fileNameItem = new QTableWidgetItem(files[i]);
     fileNameItem->setFlags(fileNameItem->flags() ^ Qt::ItemIsEditable);
@@ -214,7 +213,6 @@ void SkinsPage::createFilesTable()
   QStringList labels;
   labels << tr("Filename") << tr("Description");// << tr("Size");
   filesTable->setHorizontalHeaderLabels(labels);
-//  filesTable->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
   filesTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 //  filesTable->setColumnWidth(2,60);
   filesTable->verticalHeader()->hide();
@@ -231,7 +229,7 @@ void SkinsPage::openFileOfItem(int row, int /* column */)
   inifname=item->text();
   saveSettings();
   loadSkin();
-QMessageBox::information(this,tr("Open File:"),tr("=%1").arg(inipath));
+//QMessageBox::information(this,tr("Open File:"),tr("=%1").arg(inifname));
 //  QDesktopServices::openUrl(QUrl::fromLocalFile(currentDir.absoluteFilePath(item->text())));
 }
 
@@ -249,12 +247,14 @@ void SkinsPage::saveSettings()
 //  QSettings settings(IniFile, QSettings::NativeFormat);
 //  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
 //  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
-  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
+//  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
+QSettings settings("Bitbar", "settings");
   settings.setValue("path", inipath);
   settings.setValue("filename", inifname);
   settings.setValue("BackgroundImg", ui->CB1->isChecked());
   settings.setValue("RoundCorners", ui->CB2->isChecked());
   settings.setValue("CB3", ui->CB3->isChecked());
+//QMessageBox::information(this,tr("saveSettings:"),tr("=%1").arg(IniFile.string().c_str()));
 //qDebug() << "saving IniFile path:" <<IniFile.string().c_str();
 }
 
@@ -262,7 +262,8 @@ void SkinsPage::loadSettings()
 {
 //  QSettings settings(IniFile, QSettings::NativeFormat);
 //  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
-  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
+//  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
+QSettings settings("Bitbar", "settings");
   inipath=settings.value("path", "").toString();
   inifname=settings.value("filename", "").toString();
   inib1=settings.value("BackgroundImg", false).toBool();
@@ -275,6 +276,7 @@ void SkinsPage::loadSettings()
     ui->CB2->setCheckState(Qt::Checked);
   if(inib3)
     ui->CB3->setCheckState(Qt::Checked);
+//QMessageBox::information(this,tr("loadSettings:"),tr("=%1").arg(IniFile.string().c_str()));
 //qDebug() << "loading IniFile path:" <<IniFile.string().c_str();
 }
  

@@ -91,8 +91,10 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 {
 
 // load QMainWindow size and position from ini file
-  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
-  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
+//  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
+//  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
+QSettings settings("Bitbar", "settings");
+
 //qDebug() << "IniFile path:" <<IniFile.string().c_str();
   if(settings.contains("windowSize") && settings.contains("windowPos"))
   {
@@ -244,14 +246,16 @@ BitcoinGUI::~BitcoinGUI()
 #ifdef Q_OS_MAC
     delete appMenuBar;
 #endif
+
 //  QString IniFile=QDir::homePath()+("/skins.ini");
 //  QSettings settings(IniFile, QSettings::NativeFormat);
-  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
-  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
+//  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
+//  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
+QSettings settings("Bitbar", "settings");
 
-  QMessageBox::information(this,tr("loading IniFile:"),tr("=%1").arg(IniFile.string().c_str()));
+//  QMessageBox::information(this,tr("loading IniFile:"),tr("=%1").arg(IniFile.string().c_str()));
 
-qDebug() << "IniFile path:" <<IniFile.string().c_str();
+//qDebug() << "IniFile path:" <<IniFile.string().c_str();
 //qDebug() << "saving settings values: windowSize " << size() << " windowPos" << pos();
 
   settings.setValue("windowSize",size());
