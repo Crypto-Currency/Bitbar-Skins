@@ -91,8 +91,9 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 {
 
 // load QMainWindow size and position from ini file
-  QString IniFile=QDir::homePath()+("/skins.ini");
-  QSettings settings(IniFile, QSettings::NativeFormat);
+  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
+  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
+//qDebug() << "IniFile path:" <<IniFile.string().c_str();
   if(settings.contains("windowSize") && settings.contains("windowPos"))
   {
     resize(settings.value("windowSize").toSize());
@@ -243,10 +244,12 @@ BitcoinGUI::~BitcoinGUI()
 #ifdef Q_OS_MAC
     delete appMenuBar;
 #endif
-  QString IniFile=QDir::homePath()+("/skins.ini");
-  QSettings settings(IniFile, QSettings::NativeFormat);
+//  QString IniFile=QDir::homePath()+("/skins.ini");
+//  QSettings settings(IniFile, QSettings::NativeFormat);
+  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
+  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
 
-//qDebug() << "IniFile path:" <<IniFile;
+qDebug() << "IniFile path:" <<IniFile.string().c_str();
 //qDebug() << "saving settings values: windowSize " << size() << " windowPos" << pos();
 
   settings.setValue("windowSize",size());

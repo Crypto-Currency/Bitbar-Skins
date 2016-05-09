@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QMainWindow>
+#include <boost/filesystem.hpp>
 
 namespace Ui {
   class SkinsPage;
@@ -41,7 +42,8 @@ private:
   void saveSettings();
   void loadSkin();
 
-  QString IniFile,inipath,inifname;
+  boost::filesystem::path IniFile;
+  QString inipath,inifname;
   bool inib1,inib2,inib3;
 //  QDesktopWidget fSize;
   QMainWindow fSize;
