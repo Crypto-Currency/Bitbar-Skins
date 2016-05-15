@@ -18,9 +18,11 @@
   <property name="windowTitle">
    <string>BitBar - Debug window</string>
   </property>
+<!--
   <property name="styleSheet">
    <string notr="true">background-color: rgb(245,237,191);</string>
   </property>
+-->
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QTabWidget" name="tabWidget">
