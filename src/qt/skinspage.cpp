@@ -47,7 +47,7 @@ SkinsPage::SkinsPage(QWidget *parent) : QWidget(parent), ui(new Ui::SkinsPage)
     inipath=GetDataDir().string().c_str();
     inipath=inipath+"/skins";
     directoryComboBox=createComboBox(inipath);
-    //directoryComboBox = createComboBox(GetDataDir().string().c_str()+("/skins"));
+    //directoryComboBox = createComboBox(GetDataDir().string().c_str()+("/skins"));skins
 
   }
 //    directoryComboBox = createComboBox(QDir::currentPath());
@@ -151,7 +151,7 @@ QStringList SkinsPage::findFiles(const QStringList &files, const QString &text)
 void SkinsPage::showFiles(const QStringList &files)
 {
   inipath=currentDir.absolutePath();
-QMessageBox::information(this,tr("currentDir:"),tr("=%1").arg(inipath));
+//QMessageBox::information(this,tr("currentDir:"),tr("=%1").arg(inipath));
   
   QString line="description goes here";
   for (int i = 0; i < files.size(); ++i)
@@ -229,8 +229,9 @@ void SkinsPage::openFileOfItem(int row, int /* column */)
   inifname=item->text();
   saveSettings();
   loadSkin();
+//QMessageBox::information(this,tr("from getdatadir:"),tr("inipath=%1").arg(inifname));
 //QMessageBox::information(this,tr("Open File:"),tr("=%1").arg(inifname));
-//  QDesktopServices::openUrl(QUrl::fromLocalFile(currentDir.absoluteFilePath(item->text())));
+//QDesktopServices::openUrl(QUrl::fromLocalFile(currentDir.absoluteFilePath(item->text())));
 }
 
 
@@ -244,11 +245,7 @@ void SkinsPage::optionChanged()
 
 void SkinsPage::saveSettings()
 {
-//  QSettings settings(IniFile, QSettings::NativeFormat);
-//  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
-//  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
-//  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
-QSettings settings("Bitbar", "settings");
+  QSettings settings("Bitbar", "settings");
   settings.setValue("path", inipath);
   settings.setValue("filename", inifname);
   settings.setValue("BackgroundImg", ui->CB1->isChecked());
@@ -260,23 +257,19 @@ QSettings settings("Bitbar", "settings");
 
 void SkinsPage::loadSettings()
 {
-//  QSettings settings(IniFile, QSettings::NativeFormat);
-//  boost::filesystem::path IniFile = GetDataDir() / "skins.ini";
-//  QSettings settings(IniFile.string().c_str(), QSettings::NativeFormat);
-QSettings settings("Bitbar", "settings");
+  QSettings settings("Bitbar", "settings");
   inipath=settings.value("path", "").toString();
   inifname=settings.value("filename", "").toString();
   inib1=settings.value("BackgroundImg", false).toBool();
   inib2=settings.value("RoundCorners", false).toBool();
   inib3=settings.value("CB3", false).toBool();
-
   if(inib1)
     ui->CB1->setCheckState(Qt::Checked);
   if(inib2)
     ui->CB2->setCheckState(Qt::Checked);
   if(inib3)
     ui->CB3->setCheckState(Qt::Checked);
-//QMessageBox::information(this,tr("loadSettings:"),tr("=%1").arg(IniFile.string().c_str()));
+//QMessageBox::information(this,tr("loadSettings:"),tr("path=%1, filename=%2").arg(inipath).arg(inifname));
 //qDebug() << "loading IniFile path:" <<IniFile.string().c_str();
 }
  

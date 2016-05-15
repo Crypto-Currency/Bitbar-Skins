@@ -7,6 +7,16 @@ QMainWindow
   background-color:rgb(10,10,10);
 }
 
+QMenuBar
+{
+  color:red; /* doesn't seem to do anything*/
+}
+
+QMenuBar::item
+{
+  background-color: transparent;
+}
+
 QWidget
 {
   background-color:rgb(10,10,10);
