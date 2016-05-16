@@ -44,6 +44,22 @@ QToolTip
   border: 2px solid rgb(255,233,142);
 }
 
+QTabBar::tab
+{
+  padding: 10px 10px 10px 10px;
+  background-color:rgba(25,25,25,100); /* make background opaque */
+  color:white;
+  border-color:rgb(200,200,200);
+}
+
+QTabBar::tab::selected
+{
+  padding: 10px 10px 10px 10px;
+  background-color:rgba(225,225,225,100); /* make background opaque */
+  color:darkblue;
+  border-color:rgb(200,200,200);
+}
+
 QProgressBar
 {
   background-color: #e8e8e8;
@@ -110,7 +126,7 @@ QValidatedLineEdit
 {
   border-image: url(''); /* make it null */
   border 1px solid grey;  
-  background-color:rgb(125,125,125); /* makes text background transparent */
+  background-color:rgb(125,125,125);
   color:white; 
 }
 
@@ -118,7 +134,7 @@ QLineEdit
 {
   border-image: url(''); /* make it null */
   border 1px solid grey;  
-  background-color:rgb(125,125,125); /* makes text background transparent */
+  background-color:rgb(125,125,125);
   color:white; 
 }
 
