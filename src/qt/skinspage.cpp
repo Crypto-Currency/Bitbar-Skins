@@ -15,6 +15,7 @@
 #include <QSize>
 #include <boost/filesystem.hpp>
 #include <string>
+#include <QMainWindow>
 
 #include <QDebug>
 using namespace std;
@@ -153,35 +154,80 @@ void SkinsPage::showFiles(const QStringList &files)
   inipath=currentDir.absolutePath();
 //QMessageBox::information(this,tr("currentDir:"),tr("=%1").arg(inipath));
   
-  QString line="description goes here";
+  QString line="";// first line of file;
+  QString desc="";// descrition goes here;
+  QString vers="";// version info;
+  int fcount=0;
   for (int i = 0; i < files.size(); ++i)
   {
+    line="";
+    desc="";
+    vers="";
     QFile file(currentDir.absoluteFilePath(files[i]));
 
     QTableWidgetItem *fileNameItem = new QTableWidgetItem(files[i]);
     fileNameItem->setFlags(fileNameItem->flags() ^ Qt::ItemIsEditable);
 
+// read first line of file to get desc, version
     QFile inputFile(currentDir.absoluteFilePath(files[i]));
-    if (inputFile.open(QIODevice::ReadOnly))
+    QFileInfo fi(inputFile);
+
+    if(fi.suffix() == "qss")
     {
-      QTextStream in(&inputFile);
-      if(!in.atEnd())
-        line = in.readLine();
+      if (inputFile.open(QIODevice::ReadOnly))
+      {
+        QTextStream in(&inputFile);
+        if(!in.atEnd())
+          line = in.readLine();
+      }
+      inputFile.close();
+
+// parse line
+    int x=line.indexOf("desc=");
+    int e=0;
+    if(x>0)
+    {
+      e=line.indexOf(QChar('"'),x);
+      if(e>0) // if we found a "
+      {
+        x=e+1;
+        e=line.indexOf(QChar('"'),x); //find the next "
+        e=e-x; 
+        desc=line.mid(x,e);
+      }
     }
-    inputFile.close();
 
-    QTableWidgetItem *descriptionItem = new QTableWidgetItem(line);
+    x=line.indexOf("vers=");
+    e=0;
+    if(x>0)
+    {
+      e=line.indexOf(QChar('"'),x);
+      if(e>0) // if we found a "
+      {
+        x=e+1;
+        e=line.indexOf(QChar('"'),x); //find the next "
+        e=e-x; 
+        vers=line.mid(x,e);
+      }
+    }
+//qDebug() <<tr("index of x= %1 e=%2").arg(x).arg(e);
 
+    QTableWidgetItem *descriptionItem = new QTableWidgetItem(desc);
+    QTableWidgetItem *versionItem = new QTableWidgetItem(vers);
+
+    fcount++;
     int row = filesTable->rowCount();
     filesTable->insertRow(row);
     filesTable->setItem(row, 0, fileNameItem);
     filesTable->setItem(row, 1, descriptionItem);
+    filesTable->setItem(row, 2, versionItem);
   }
-  filesFoundLabel->setText(tr("%1 file(s) found").arg(files.size()) +
+    }
+  filesFoundLabel->setText(tr("%1 file(s) found").arg(fcount) +
 #if defined(Q_OS_SYMBIAN) || defined(Q_WS_MAEMO_5)
-    (" (Select file to open it)"));
+    (" (Select file to load it)"));
 #else
-    (" (Double click on a file to open it)"));
+    (" (Double click on a file to load it)"));
 #endif
   filesFoundLabel->setWordWrap(true);
 }
@@ -207,14 +253,17 @@ QComboBox *SkinsPage::createComboBox(const QString &text)
 
 void SkinsPage::createFilesTable()
 {
-  filesTable = new QTableWidget(0, 2);
+  filesTable = new QTableWidget(0, 3);
   filesTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
   QStringList labels;
-  labels << tr("Filename") << tr("Description");// << tr("Size");
+  labels << tr("Filename") << tr("Description") << tr("Version");
   filesTable->setHorizontalHeaderLabels(labels);
-  filesTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-//  filesTable->setColumnWidth(2,60);
+//  filesTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+
+  filesTable->setColumnWidth(0,160);// last column get resized automatically by qt
+  filesTable->setColumnWidth(2,100);
+  filesTable->setColumnWidth(1,260);
   filesTable->verticalHeader()->hide();
   filesTable->setShowGrid(false);
 
@@ -283,3 +332,8 @@ void SkinsPage::loadSkin()
   app->setStyleSheet(newStyleSheet);
 }
 
+void SkinsPage::resizeEvent(QResizeEvent* event)
+{
+  int ww=width();
+  filesTable->setColumnWidth(1,ww-278);
+}

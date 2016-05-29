@@ -1,4 +1,4 @@
-/*desc='default skin: light gold background with darker gold circles'*/
+/* desc= "default skin: light gold background with darker gold circles", vers="1.1"  */
 
 /* first line is looked at to get the skin description - don't forget the 's */
 
@@ -10,6 +10,11 @@ QMainWindow
 QWidget
 {
   border-image: url(skins/images/bitbar-background.jpg) 0 0 0 0 stretch stretch;
+}
+
+QMenuBar::item
+{
+  background-color: transparent;
 }
 
 QToolButton:!hover
@@ -71,7 +76,9 @@ QPushButton
 
 QLabel
 {
-  background-color:rgba(255,255,255,0);
+  border-image: url('') 0 0 0 0 stretch stretch; /* make it null */
+  background-color:rgba(125,125,125,0); /* makes text background transparent */
+  color:black; 
 }
 
 QMenu

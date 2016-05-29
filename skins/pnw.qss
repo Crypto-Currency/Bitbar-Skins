@@ -1,17 +1,20 @@
-/*desc='Pacific NW:Inspired from living in Seattle area'*/
+/*desc="Pacific NW:Inspired from living in Seattle area",vers="1.2"*/
 
-/* first line is looked at to get the skin description - don't forget the 's */
+/* first line is looked at to get the skin description */
 
 QMainWindow
 {
-  border-image: url(skins/images/pnw-background.jpg) 0 0 0 0 stretch stretch;
   background-color:rgb(100,100,200); /**/
 }
 
 QWidget
 {
-/*  border-image: url(skins/images/pnw-background.jpg) 0 0 0 0 stretch stretch; */
-  background-color:rgba(10,10,10,0); /* make transparent*/
+  border-image: url(skins/images/pnw-background.jpg) 0 0 0 0 stretch stretch;
+}
+
+QMenuBar::item
+{
+  background-color: transparent;
 }
 
 /* change just the frames named (use# for names) frame */
@@ -26,22 +29,6 @@ QWidget
 #frame_3
 {
   border: 1px solid black;
-}
-
-QTabBar::tab
-{
-  padding: 10px 10px 10px 10px;
-  background-color:rgba(25,25,25,100); /* make background opaque */
-  color:white;
-  border-color:rgb(200,200,200);
-}
-
-QTabBar::tab::selected
-{
-  padding: 10px 10px 10px 10px;
-  background-color:rgba(225,225,225,100); /* make background opaque */
-  color:darkblue;
-  border-color:rgb(200,200,200);
 }
 
 QStatusBar
@@ -121,6 +108,15 @@ QPushButton
   border-color: rgb(255,233,142);
 }
 
+QPushButton:hover
+{
+  background-color:rgb(10,10,10);
+  color:white; border-style: outset;
+  border-width: 2px;
+  border-radius: 10px;
+  border-color: rgb(255,233,142);
+}
+
 QLabel
 {
   border-image: url('') 0 0 0 0 stretch stretch; /* make it null */
@@ -129,6 +125,20 @@ QLabel
 }
 
 QMenu
+{
+  padding: 2px 10px 2px 10px;
+  background-color:rgb(10,10,10);
+  border:2px solid rgb(255,233,142);
+}
+
+QMenu#scrollArea
+{
+  padding: 2px 10px 2px 10px;
+  background-color:rgb(10,10,10);
+  border:2px solid rgb(255,233,142);
+}
+
+QPushButton#scrollArea
 {
   padding: 2px 10px 2px 10px;
   background-color:rgb(10,10,10);

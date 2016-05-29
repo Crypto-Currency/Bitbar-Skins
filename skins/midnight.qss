@@ -1,4 +1,4 @@
-/*desc='midnight special: black with gold trim'*/
+/*desc="midnight special: black with gold trim",vers="1.2"*/
 
 /* first line is looked at to get the skin description - don't forget the 's */
 
@@ -11,6 +11,11 @@ QWidget
 {
   background-color:rgb(10,10,10);
   color:white;
+}
+
+QMenuBar::item
+{
+  background-color: transparent;
 }
 
 /* change just the frames named (use# for names) frame */

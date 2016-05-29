@@ -29,6 +29,9 @@ private slots:
   void openFileOfItem(int row, int column);
   void optionChanged();
 
+protected:
+  void resizeEvent(QResizeEvent *event);
+
 private:
   Ui::SkinsPage *ui;
   QStringList findFiles(const QStringList &files, const QString &text);
